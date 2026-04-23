@@ -1,20 +1,29 @@
 import { Eyebrow } from "./Eyebrow";
+import caseClinica from "@/assets/case-clinica.jpg";
+import caseImobiliaria from "@/assets/case-imobiliaria.jpg";
+import caseArtesanato from "@/assets/case-artesanato.jpg";
 
 const cases = [
   {
     cat: "Site + SEO",
     name: "Clínica de saúde",
     desc: "Site institucional com blog, agendamento online e SEO local pode gerar até +180% de visitas orgânicas em 3 meses.",
+    image: caseClinica,
+    alt: "Mockup de site para clínica de saúde com agendamento online",
   },
   {
     cat: "Automação + Chatbot",
     name: "Imobiliária",
     desc: "Atendimento automatizado via WhatsApp com agente de IA que qualifica leads e agenda visitas — economizando até 4h por dia da equipe.",
+    image: caseImobiliaria,
+    alt: "Chatbot de WhatsApp para imobiliária qualificando leads",
   },
   {
     cat: "Conteúdo + Imagens IA",
     name: "Loja de artesanato",
     desc: "Estratégia de conteúdo completa: posts, stories e imagens de produtos gerados com IA podem dobrar engajamento em 45 dias.",
+    image: caseArtesanato,
+    alt: "Imagens de produtos artesanais geradas com IA",
   },
 ];
 
@@ -40,23 +49,16 @@ export const UseCases = () => (
             key={p.name}
             className={`reveal reveal-d${i + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
           >
-            <div className="aspect-[16/9] bg-surface-2 p-3.5 flex flex-col gap-2 relative overflow-hidden">
-              <div className="absolute inset-0 grid-bg opacity-50" />
-              <div className="flex items-center gap-1.5 relative z-10">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff5f57]/60" />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#febc2e]/60" />
-                <span className="w-1.5 h-1.5 rounded-full bg-[#28c840]/60" />
-                <div className="flex-1 h-1 bg-border/50 rounded ml-1" />
-              </div>
-              <div className="flex-1 flex flex-col gap-1 relative z-10">
-                <div className="h-1 w-3/5 bg-brand rounded" />
-                <div className="h-1 w-2/5 bg-border/50 rounded" />
-              </div>
-              <div className="flex gap-1.5 flex-[2] relative z-10">
-                <div className="flex-[2] bg-brand/10 rounded" />
-                <div className="flex-1 bg-border/50 rounded" />
-                <div className="flex-1 bg-border/50 rounded" />
-              </div>
+            <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
+              <img
+                src={p.image}
+                alt={p.alt}
+                width={1280}
+                height={720}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
               <div className="absolute inset-0 bg-[hsl(var(--brand-bg)/0.7)] backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-[11px] font-semibold text-[hsl(var(--brand-blue-soft))] tracking-wider uppercase border border-brand-soft px-3.5 py-1.5 rounded-full bg-brand/10">
                   Caso de uso
