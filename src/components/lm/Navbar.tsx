@@ -6,7 +6,6 @@ const links = [
   { id: "inicio", label: "Início" },
   { id: "servicos", label: "Serviços" },
   { id: "casos", label: "Casos de uso" },
-  { id: "pacotes", label: "Pacotes" },
   { id: "sobre", label: "Sobre" },
 ];
 
