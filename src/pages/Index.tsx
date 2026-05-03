@@ -3,7 +3,6 @@ import { Navbar } from "@/components/lm/Navbar";
 import { Hero } from "@/components/lm/Hero";
 import { Services } from "@/components/lm/Services";
 import { UseCases } from "@/components/lm/UseCases";
-import { Packages } from "@/components/lm/Packages";
 import { Process } from "@/components/lm/Process";
 import { About } from "@/components/lm/About";
 import { FAQ } from "@/components/lm/FAQ";
@@ -20,7 +19,6 @@ const Index = () => {
       <Hero />
       <Services />
       <UseCases />
-      <Packages />
       <Process />
       <About />
       <FAQ />
