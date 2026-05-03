@@ -27,6 +27,29 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
 }
 
+// Best-effort in-memory rate limiter (per edge instance).
+// Limits: max 3 submissions per IP per 60s, and 10 per 10min.
+const ipHits = new Map<string, number[]>();
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (ipHits.get(ip) ?? []).filter((t) => now - t < 10 * 60_000);
+  const recent = hits.filter((t) => now - t < 60_000);
+  if (recent.length >= 3 || hits.length >= 10) {
+    ipHits.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  ipHits.set(ip, hits);
+  if (ipHits.size > 5000) {
+    for (const [k, v] of ipHits) {
+      const kept = v.filter((t) => now - t < 10 * 60_000);
+      if (kept.length === 0) ipHits.delete(k);
+      else ipHits.set(k, kept);
+    }
+  }
+  return false;
+}
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")
@@ -40,6 +63,17 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      req.headers.get("cf-connecting-ip") ||
+      "unknown";
+    if (rateLimited(ip)) {
+      return new Response(
+        JSON.stringify({ error: "Muitas requisições. Tente novamente em instantes." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const body = (await req.json()) as LeadPayload;
 
     const name = sanitize(body.name, 100);
