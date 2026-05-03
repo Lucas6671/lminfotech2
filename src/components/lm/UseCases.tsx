@@ -62,8 +62,24 @@ const fallbackCases: UseCase[] = [
   },
 ];
 
+const PLACEHOLDER_IMAGE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect width='100%' height='100%' fill='#1a1a1a'/><text x='50%' y='50%' fill='#888' font-family='sans-serif' font-size='32' text-anchor='middle' dominant-baseline='middle'>Imagem indisponível</text></svg>`
+  );
+
 export const UseCases = () => {
   const [cases, setCases] = useState<UseCase[]>(fallbackCases);
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+
+  const handleImageError = (caseItem: UseCase) => {
+    console.warn("[UseCases] Falha ao carregar imagem:", {
+      id: caseItem.id,
+      name: caseItem.name,
+      image_url: caseItem.image_url,
+    });
+    setFailedImages((prev) => ({ ...prev, [caseItem.id]: true }));
+  };
 
   useEffect(() => {
     const load = async () => {
