@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import { Eyebrow } from "./Eyebrow";
+import { supabase } from "@/integrations/supabase/client";
 
-const cases = [
+interface UseCase {
+  id: string;
+  category: string;
+  name: string;
+  description: string;
+  image_url: string | null;
+  image_alt: string | null;
+}
+
+const fallbackCases: UseCase[] = [
   {
     id: "1",
     category: "Saúde & Clínicas",
@@ -52,6 +63,21 @@ const cases = [
 ];
 
 export const UseCases = () => {
+  const [cases, setCases] = useState<UseCase[]>(fallbackCases);
+
+  useEffect(() => {
+    const load = async () => {
+      const { data, error } = await supabase
+        .from("use_cases")
+        .select("id, category, name, description, image_url, image_alt")
+        .order("display_order", { ascending: true });
+      if (!error && data && data.length > 0) {
+        setCases(data);
+      }
+    };
+    load();
+  }, []);
+
   return (
     <section id="casos" className="py-24 bg-background">
       <div className="max-w-[1100px] mx-auto px-6">
@@ -75,14 +101,16 @@ export const UseCases = () => {
               className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
             >
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
-                <img
-                  src={p.image_url}
-                  alt={p.image_alt}
-                  width={1280}
-                  height={720}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {p.image_url && (
+                  <img
+                    src={p.image_url}
+                    alt={p.image_alt ?? p.name}
+                    width={1280}
+                    height={720}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute inset-0 bg-[hsl(var(--brand-bg)/0.7)] backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-[11px] font-semibold text-[hsl(var(--brand-blue-soft))] tracking-wider uppercase border border-brand-soft px-3.5 py-1.5 rounded-full bg-brand/10">

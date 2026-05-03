@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.is_approved_case_image(text) TO anon, authenticated;
