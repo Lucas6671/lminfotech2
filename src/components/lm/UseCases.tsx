@@ -128,11 +128,12 @@ export const UseCases = () => {
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
                 {p.image_url && (
                   <img
-                    src={p.image_url}
+                    src={failedImages[p.id] ? PLACEHOLDER_IMAGE : p.image_url}
                     alt={p.image_alt ?? p.name}
                     width={1280}
                     height={720}
                     loading="lazy"
+                    onError={() => handleImageError(p)}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 )}
