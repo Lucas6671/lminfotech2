@@ -72,7 +72,16 @@ export const UseCases = () => {
         .select("id, category, name, description, image_url, image_alt")
         .order("display_order", { ascending: true });
       if (!error && data && data.length > 0) {
-        setCases(data);
+        setCases(
+          data.map((item, index) => {
+            const fallback = fallbackCases[index % fallbackCases.length];
+            return {
+              ...item,
+              image_url: item.image_url || fallback.image_url,
+              image_alt: item.image_alt || fallback.image_alt || item.name,
+            };
+          })
+        );
       }
     };
     load();
