@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Eyebrow } from "./Eyebrow";
-import { Analytics } from "@vercel/analytics/next"
 
 const cases = [
   { id:"1", category:"Saúde & Clínicas", name:"Clínica Bem Viver", description:"Site institucional com blog, agendamento online e SEO local. +180% de visitas orgânicas em 3 meses.", image_url:"https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=1280&h=720&fit=crop&auto=format&q=80", image_alt:"Clínica de saúde moderna" },
@@ -12,7 +11,6 @@ const cases = [
 ];
 
 export const UseCases = () => {
-  // Re-observe after mount so cards are caught by IntersectionObserver
   useEffect(() => {
     const timer = setTimeout(() => {
       const obs = new IntersectionObserver(
@@ -36,15 +34,13 @@ export const UseCases = () => {
           </h2>
           <p className="text-[17px] text-muted-brand leading-[1.75] max-w-[600px] mb-14 font-light">
             Cenários reais de aplicação para diferentes tipos de negócio. Cada projeto
-            é desenhado sob medida para o seu objetivo — esses são exemplos do que a IA pode entregar.
+            é desenhado sob medida para o seu objetivo.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {cases.map((p, i) => (
-            <article
-              key={p.id}
-              className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
+            <article key={p.id}
+              className={`reveal reveal-d${(i%3)+1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
             >
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
                 <img
@@ -57,11 +53,6 @@ export const UseCases = () => {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                <div className="absolute inset-0 bg-[hsl(var(--brand-bg)/0.7)] backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-[11px] font-semibold text-[hsl(var(--brand-blue-soft))] tracking-wider uppercase border border-brand-soft px-3.5 py-1.5 rounded-full bg-brand/10">
-                    Caso de uso
-                  </span>
-                </div>
               </div>
               <div className="p-5">
                 <div className="text-[10px] text-[hsl(var(--brand-blue-soft))] font-semibold tracking-[0.08em] uppercase mb-1.5">{p.category}</div>
