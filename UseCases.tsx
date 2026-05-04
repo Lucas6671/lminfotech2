@@ -40,8 +40,8 @@ export const UseCases = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {cases.map((p, i) => (
             <article key={p.id}
-              className={`reveal reveal-d${(i%3)+1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
-            >
+              className="group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1"      
+              >
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
                 <img
                   src={p.image_url}
