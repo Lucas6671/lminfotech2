@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Eyebrow } from "./Eyebrow";
+import { Analytics } from "@vercel/analytics/next"
 
 const cases = [
   { id:"1", category:"Saúde & Clínicas", name:"Clínica Bem Viver", description:"Site institucional com blog, agendamento online e SEO local. +180% de visitas orgânicas em 3 meses.", image_url:"https://images.unsplash.com/photo-1666214280557-f1b5022eb634?w=1280&h=720&fit=crop&auto=format&q=80", image_alt:"Clínica de saúde moderna" },
