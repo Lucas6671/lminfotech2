@@ -70,13 +70,12 @@ export const UseCases = () => {
           {cases.map((p, i) => (
             <article
               key={p.id}
-              className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
-            >
-              <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
-                <img
+              className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`>                             >
+<div className="relative overflow-hidden bg-surface-2" style={{aspectRatio:"16/9", minHeight:"200px"}}>  
+            <img
                   src={p.image_url}
                   alt={p.image_alt}
-                  width={1280}
+                  width={1280}      
                   height={720}
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
