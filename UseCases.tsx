@@ -71,14 +71,12 @@ export const UseCases = () => {
             <article
               key={p.id}
               className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`>                             >
-<div className="relative overflow-hidden bg-surface-2" style={{aspectRatio:"16/9", minHeight:"200px"}}>  
-            <img
+        <div style={{position:"relative", overflow:"hidden", height:"200px", background:"#0f2040"}}>
+                <img
                   src={p.image_url}
-                  alt={p.image_alt}
-                  width={1280}      
-                  height={720}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 alt={p.image_alt}
+                loading="lazy"
+                style={{position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover"}}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                 <div className="absolute inset-0 bg-[hsl(var(--brand-bg)/0.7)] backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
