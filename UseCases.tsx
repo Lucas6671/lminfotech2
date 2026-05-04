@@ -23,10 +23,11 @@ export const UseCases = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
+      return (
     <section id="casos" className="py-24 bg-background">
+      <style>{`.casos-card { opacity: 1 !important; transform: none !important; }`}</style>
       <div className="max-w-[1100px] mx-auto px-6">
-        <div className="reveal">
+        <div>
           <Eyebrow>Casos de uso</Eyebrow>
           <h2 className="font-display font-extrabold leading-tight tracking-tight mb-5 text-[clamp(30px,4vw,46px)]">
             O que dá pra fazer com{" "}
@@ -39,9 +40,7 @@ export const UseCases = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {cases.map((p, i) => (
-            <article key={p.id}
-              className="group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1"      
-              >
+            <article key={p.id} className="casos-card group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1">
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
                 <img
                   src={p.image_url}
