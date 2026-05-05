@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Eyebrow } from "./Eyebrow";
-import { supabase } from "@/integrations/supabase/client";
 
 interface UseCase {
   id: string;
   category: string;
   name: string;
   description: string;
-  image_url: string | null;
-  image_alt: string | null;
+  image_url: string;
+  image_alt: string;
 }
 
-const fallbackCases: UseCase[] = [
+const cases: UseCase[] = [
   {
     id: "1",
     category: "Saúde & Clínicas",
@@ -62,51 +61,27 @@ const fallbackCases: UseCase[] = [
   },
 ];
 
-const PLACEHOLDER_IMAGE =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect width='100%' height='100%' fill='#1a1a1a'/><text x='50%' y='50%' fill='#888' font-family='sans-serif' font-size='32' text-anchor='middle' dominant-baseline='middle'>Imagem indisponível</text></svg>`
-  );
-
 export const UseCases = () => {
-  const [cases, setCases] = useState<UseCase[]>(fallbackCases);
-  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
-
-  const handleImageError = (caseItem: UseCase) => {
-    console.warn("[UseCases] Falha ao carregar imagem:", {
-      id: caseItem.id,
-      name: caseItem.name,
-      image_url: caseItem.image_url,
-    });
-    setFailedImages((prev) => ({ ...prev, [caseItem.id]: true }));
-  };
-
   useEffect(() => {
-    const load = async () => {
-      const { data, error } = await supabase
-        .from("use_cases")
-        .select("id, category, name, description, image_url, image_alt")
-        .order("display_order", { ascending: true });
-      if (!error && data && data.length > 0) {
-        setCases(
-          data.map((item, index) => {
-            const fallback = fallbackCases[index % fallbackCases.length];
-            return {
-              ...item,
-              image_url: item.image_url || fallback.image_url,
-              image_alt: item.image_alt || fallback.image_alt || item.name,
-            };
-          })
-        );
-      }
-    };
-    load();
+    const timer = setTimeout(() => {
+      const obs = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          }),
+        { threshold: 0.08 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+      return () => obs.disconnect();
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <section id="casos" className="py-24 bg-background">
+      <style>{`.casos-card { opacity: 1 !important; transform: none !important; }`}</style>
       <div className="max-w-[1100px] mx-auto px-6">
-        <div className="reveal">
+        <div>
           <Eyebrow>Casos de uso</Eyebrow>
           <h2 className="font-display font-extrabold leading-tight tracking-tight mb-5 text-[clamp(30px,4vw,46px)]">
             O que dá pra fazer com{" "}
@@ -114,46 +89,33 @@ export const UseCases = () => {
           </h2>
           <p className="text-[17px] text-muted-brand leading-[1.75] max-w-[600px] mb-14 font-light">
             Cenários reais de aplicação para diferentes tipos de negócio. Cada projeto
-            é desenhado sob medida para o seu objetivo — esses são exemplos do que
-            a IA pode entregar.
+            é desenhado sob medida para o seu objetivo.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {cases.map((p, i) => (
+          {cases.map((p) => (
             <article
               key={p.id}
-              className={`reveal reveal-d${(i % 3) + 1} group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1`}
+              className="casos-card group bg-surface border border-border/50 hover:border-brand-soft rounded-2xl overflow-hidden transition-all hover:-translate-y-1"
             >
               <div className="aspect-[16/9] relative overflow-hidden bg-surface-2">
-                {p.image_url && (
-                  <img
-                    src={failedImages[p.id] ? PLACEHOLDER_IMAGE : p.image_url}
-                    alt={p.image_alt ?? p.name}
-                    width={1280}
-                    height={720}
-                    loading="lazy"
-                    onError={() => handleImageError(p)}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                )}
+                <img
+                  src={p.image_url}
+                  alt={p.image_alt}
+                  width={1280}
+                  height={720}
+                  loading="eager"
+                  decoding="async"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                <div className="absolute inset-0 bg-[hsl(var(--brand-bg)/0.7)] backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-[11px] font-semibold text-[hsl(var(--brand-blue-soft))] tracking-wider uppercase border border-brand-soft px-3.5 py-1.5 rounded-full bg-brand/10">
-                    Caso de uso
-                  </span>
-                </div>
               </div>
               <div className="p-5">
                 <div className="text-[10px] text-[hsl(var(--brand-blue-soft))] font-semibold tracking-[0.08em] uppercase mb-1.5">
                   {p.category}
                 </div>
-                <h3 className="font-display text-base font-bold mb-1.5 tracking-tight">
-                  {p.name}
-                </h3>
-                <p className="text-[13px] text-faint leading-relaxed font-light">
-                  {p.description}
-                </p>
+                <h3 className="font-display text-base font-bold mb-1.5 tracking-tight">{p.name}</h3>
+                <p className="text-[13px] text-faint leading-relaxed font-light">{p.description}</p>
               </div>
             </article>
           ))}
