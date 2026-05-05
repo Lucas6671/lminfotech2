@@ -104,7 +104,7 @@ export const UseCases = () => {
                   alt={p.image_alt}
                   width={1280}
                   height={720}
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
